@@ -1,0 +1,189 @@
+1.- select nifemp from empleado where codemp in (select codemp from habemp) order by nifemp;
+
+2.- select nomdep from departamento d where preanu * 0.25<=(select sum(salemp) from empleado where d.coddep= coddep);
+
+-- Listar el nombre de los centros con departamentos con presupuesto distinto al máximo. --
+
+(1) 3.- select nomcen from centro c where exists (select * from departamento where preanu <> (select MAX(preanu) from departamento) and codcen=c.codcen);
+(2) 3.- select nomcen from centro where codcen in (select codcen from departamento where preanu <> (select max(preanu) from departamento));
+
+-- Listar el nombre de los hijos del empleado que se apellida ‘Correa’. --
+
+(JOIN) 4.- select nomhi from hijo h join empleado e on h.codemp=e.codemp where e.nomemp like '%Correa%';
+(SubConsultas) 4.- select nomhi from hijo where codemp in (select codemp from empleado where nomemp like '%Correa%');
+
+-- Listar ordenado el nombre de los hijos nacidos en cualquier año de los que se contrataron empleados. --
+
+5.- select nomhi from hijo h where exists (select * from empleado where YEAR(fecinemp)=YEAR(h.fecnahi)) order by nomhi;
+
+-- Listar los departamentos que tengan algún empleado que gane más de 500000 ptas al mes. --
+
+6.- select * from departamento d where exists (select * from empleado e where e.coddep = d.coddep and salemp > (500000/12)); --mal
+
+-- Listar la ciudad donde trabaja el padre de ‘Saladino Oropel, Flavia’. --
+
+7.- select * from centro where codcen in (select codcen from departamento where coddep in (select coddep from empleado where codemp in (select codemp from hijo where nomhi="Saladino Oropel, Flavia")));
+
+-- Listar por orden los empleados del centro ‘Fábrica Zona Sur’ que tienen hijos nacidos antes de su contratación por la empresa. --
+
+8.- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+************************************JONATHAN****************************************
+-- 3Listar el nombre de los centros con departamentos con presupuesto distinto al máximo.--
+-- 4.Listar el nombre de los hijos del empleado que se apellida ‘Correa’.
+-- 5.Listar ordenado el nombre de los hijos nacidos en cualquier año de los que se contrataronempleados.
+--6.Listar los departamentos que tengan algún empleado que gane más de 500000 ptas al mes.
+--7.Listar la ciudad donde trabaja el padre de ‘Saladino Oropel, Flavia’.estoy mamadisimo hijo de su puta madre
+--8.Listar por orden los empleados del centro ‘Fábrica Zona Sur’ que tienen hijos nacidos antes desu contratación por la empresa.
+--9.Listar los departamentos donde hay al menos un trabajador cuyo salario supone más del 40%del presupuesto del departamento.
+--10.Listar  los  nombres  y  la  fecha   de  nacimiento  de  todos  los  empleados  que   dirigiendo   undepartamento, no dirigen un centro. Ordenar por fecha ascendente.
+--11.Listar ordenadamente los nombres de empleados cuyo salario está por debajo del 50% delsalario promedio en la empresa.
+--12.Listar el nombre del empleado para el que el dato Empleado.NumHi no coincide con lainformación reflejada en la tabla Hijos.
+--13.Listar por orden el nombre de los empleados contratados antes de 1990 y que dirijan aempleados que ingresen más de 3 millones anuales (excluidos ellos mismos).
+--14.Listar el nombre y salario medio de aquellos departamentos que están por debajo del salario
+(J)3.-select nomcen from centro c where exists (select * from departamento where preanu<>max(select max(preanu)from departamento)) and codcen=c.codcen   --nunca poner max(preanu)
+      select nomcen from centro c where codcen in(select codcen from departamento where preanu <> (select max(preanu)from departamento)) and codcen=c.codcen;
+(J)4.-select nomhi from hijo where codemp in(select codemp from empleado where nomemp like'%Correa%') and codemp=hijo.codemp; --lo he hecho solito :)
+
+(J)5.-select nomhi from hijo where fecnahi in (select fecinemp from empleado where year(fecnahi)=year(empleado.fecinemp) order by nomhi;
+(J)6.-select coddep from departamento where coddep in(select coddep from empleado where salemp<500000/12)and departamento.coddep=empleado.coddep;
+(J)7.-select pobcen from centro where coddep
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++PABLO++++++++++++++++++++++++++++++++++++++++++++++
+2.-
+select nomdep from departamento where preanu*0.25 <=(select sum(salemp)from empleado where departamento.coddep=coddep);
+
+3.-
+primera forma--
+
+select nomcen from centro where exists (select * from departamento where preanu<>(select max(preanu)from departamento) and codcen=centro.codcen);
+
+segunda forma--
+
+select nomcen from centro where codcen in (select codcen from departamento where preanu<>(select max(preanu)from departamento));
+
+4.-
+mi forma--
+
+select nomhi from hijo where exists(select * from empleado where nomemp like'%Correa%' and codemp=hijo.codemp);
+
+segunda forma--
+
+	select nomhi from hijo where codemp in(select codemp from empleado where nomemp like '%correa%');
+
+5.-
+select nomhi from hijo where YEAR(fecnahi) in (select year(fecinemp)from empleado)order by nomhi;
+
+6.-
+select * from departamento d where exists (select * from empleado e where e.coddep = d.coddep and salemp > (500000/12));
+
+7.-
+select pobcen from centro where codcen in (select codcen from departamento where coddep in(select coddep from empleado where codemp in(select codemp from hijo where nomhi='Saladino oropel, Flavia')));
+
+8.-
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++LUIS++++++++++++++++++++++++++++++++++++++++++++++
+1----------------------
+SELECT NifEmp
+FROM empleado
+WHERE codemp IN (SELECT codemp FROM habemp);
+
+2----------------------
+SELECT NomDep
+FROM departamento d
+WHERE preanu*0.25 <= (SELECT SUM(SalEmp) FROM empleado WHERE d.CodDep = CodDep);
+
+3----------------------
+SELECT NomCen
+FROM centro c
+WHERE EXIST (SELECT * FROM departamento WHERE preanu<(SELECT MAX(preanu)FROM departamento) AND CodCen=c.CodCen);
+
+OTRA VERSIÓN
+SELECT NomCen
+FROM centro
+WHERE CodCen IN(SELECT CodCen FROM departamento WHERE preanu<(SELECT MAX(preanu) FROM departamento));
+
+4----------------------
+SELECT NomHi
+FROM hijo
+WHERE CodEmp IN (SELECT Codemp FROM empleado WHERE NomEmp LIKE "%Correa%");
+
+5----------------------
+SELECT NomHi
+FROM hijo
+WHERE YEAR(FecNaHi) IN (SELECT YEAR(FecInEmp) FROM empleado)
+ORDER BY NomHi;
+
+6-----------------------
+SELECT NomDep
+FROM departamento
+where CodDep IN (SELECT CodDep FROM empleado WHERE  (Salemp/12)>500000);
+
+7-------------------------
+SELECT PobCen
+FROM centro
+WHERE CodCen IN(SELECT CodCen FROM departamento WHERE CodDep IN (SELECT CodDep FROM empleado WHERE CodEmp IN(SELECT CodEmp FROM hijo WHERE NomHi LIKE 'Saladino Oropel, Flavia')));
+
+8---------------------------
+SELECT NomEmp
+FROM empleado
+WHERE CodDep IN(SELECT CodDep FROM departamento WHERE CodCen IN(SELECT CodCen FROM centro WHERE NomCen LIKE 'Fábrica Zona Sur')) AND FecInEmp>ANY(SELECT FecNaHi FROM hijo) ORDER BY NomEmp;
+
+9----------------------------
+SELECT NomDep
+FROM departamento d
+WHERE PreAnu>ANY(SELECT (SalEmp*40)/100 FROM empleado e WHERE d.CodDep=e.CodDep);
+
+10---------------------------
+SELECT Nomemp
+FROM empleado
+WHERE CodEmp IN(SELECT
