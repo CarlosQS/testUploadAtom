@@ -1,0 +1,16 @@
+public class MyClass {
+    public static void main(String args[]) {
+      int[][] matriz = {{9, 8, 7, 6},
+                    {5, 4, 3, 2},
+                    {7, 14},
+                    {1, 0, 12, 45}};
+        int maxVal=0;
+        for(int x=0;x<matriz.length; x++){
+            for(int y=0;y<matriz[x].length; y++){
+                if(maxVal<matriz[x][y])
+                    maxVal=matriz[x][y];
+            }
+        }
+        System.out.println("Valor máximo: "+maxVal);
+    }
+}
